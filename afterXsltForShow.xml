@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<movies>
+    <movies>
+        <title>Бегущий по лезвию 2049</title>
+        <description>A young blade runner's discovery of a long-buried secret leads him to track down former blade
+            runner Rick Deckard, who's been missing for thirty years.
+        </description>
+        <fulldate>(2017)</fulldate>
+        <fullname>Denis Villeneuve</fullname>
+        <actors>
+            <actors>Harrison Ford</actors>
+            <actors>Ryan Gosling</actors>
+            <actors>Ana de Armas</actors>
+            <actors>Dave Bautista</actors>
+        </actors>
+    </movies>
+    <movies>
+        <title>Бегущий по лезвию</title>
+        <description>A blade runner must pursue and try to terminate four replicants who stole a ship in space and have
+            returned to Earth to find their creator.
+        </description>
+        <fulldate>(1982)</fulldate>
+        <fullname>Ridley Scott</fullname>
+        <actors>
+            <actors>Harrison Ford</actors>
+            <actors>Rutger Hauer</actors>
+            <actors>Sean Young</actors>
+            <actors>Edward James Olmos</actors>
+        </actors>
+    </movies>
+    <movies>
+        <title>Oscar Pistorius: Blade Runner Killer</title>
+        <description>A dramatized account of South African gold-medalist Paralympian Oscar Pistorius' rise to fame and
+            his fairytale romance with model Reeva Steenkamp that ended in her untimely death on ... See full summary »
+        </description>
+        <fulldate>(2017)</fulldate>
+        <fullname>Norman Stone</fullname>
+        <actors>
+            <actors>Andreas Damm</actors>
+            <actors>Toni Garrn</actors>
+            <actors>Timothy Davis</actors>
+            <actors>Alphie Hyorth</actors>
+        </actors>
+    </movies>
+</movies>

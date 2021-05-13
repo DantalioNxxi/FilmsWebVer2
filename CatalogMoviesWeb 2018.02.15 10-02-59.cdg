@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="CatalogMoviesWeb">
+  <ClassDiagramComponents>
+    <Class name="Catalog" package="ncec.catalogmoviesweb" visibility="public" xPosition="93.0" yPosition="816.0">
+      <Fields>
+        <Field name="fm" type="FabricMovies" visibility="package"/>
+        <Field name="creator" type="User" visibility="package"/>
+        <Field name="id" type="int" visibility="package"/>
+        <Field name="name" type="String" visibility="package"/>
+        <Field name="films" type="HashMap&lt;String, Movie&gt;" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="int" name="id"/>
+          <Argument type="String" name="name"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="User" name="creator"/>
+          <Argument type="int" name="id"/>
+          <Argument type="String" name="name"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getMovie" returnType="Movie" visibility="public">
+          <Argument type="String" name="name"/>
+        </Method>
+        <Method name="addMovie" returnType="void" visibility="public">
+          <Argument type="Movie" name="movie"/>
+        </Method>
+        <Method name="removeMovie" returnType="void" visibility="public">
+          <Argument type="String" name="name"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="CatalogException" package="ncec.catalogmoviesweb" visibility="public" xPosition="320.0" yPosition="20.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="String" name="message"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="String" name="message"/>
+          <Argument type="Throwable" name="cause"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="Throwable" name="cause"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="String" name="message"/>
+          <Argument type="Throwable" name="cause"/>
+          <Argument type="boolean" name="enableSuppression"/>
+          <Argument type="boolean" name="writableStackTrace"/>
+        </Constructor>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Class name="CatalogManager" package="ncec.catalogmoviesweb" visibility="public" xPosition="614.0" yPosition="547.0">
+      <Fields>
+        <Field name="countries" type="Set&lt;String&gt;" visibility="public" isStatic="true"/>
+        <Field name="catalogs" type="Set&lt;Catalog&gt;" visibility="public" isStatic="true"/>
+        <Field name="movies" type="HashMap&lt;String, Movie&gt;" visibility="public" isStatic="true"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="private"/>
+      </Constructors>
+      <Methods>
+        <Method name="addCountry" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String" name="name"/>
+        </Method>
+        <Method name="addCatalog" returnType="void" visibility="public" isStatic="true">
+          <Argument type="Catalog" name="name"/>
+        </Method>
+        <Method name="addMovie" returnType="void" visibility="public" isStatic="true">
+          <Argument type="Movie" name="movie"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="FabricMovies" package="ncec.catalogmoviesweb" visibility="public" xPosition="668.0" yPosition="250.0">
+      <Fields/>
+      <Constructors/>
+      <Methods>
+        <Method name="getMovie" returnType="Movie" visibility="public">
+          <Argument type="String" name="name"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Genre" package="ncec.catalogmoviesweb" visibility="public" xPosition="1063.0" yPosition="403.0">
+      <Fields/>
+      <Constructors/>
+      <Methods/>
+    </Class>
+    <Class name="Movie" package="ncec.catalogmoviesweb" visibility="public" xPosition="1063.0" yPosition="547.0">
+      <Fields>
+        <Field name="name" type="String" visibility="private"/>
+        <Field name="creator" type="User" visibility="private"/>
+        <Field name="genres" type="EnumSet&lt;Genre.GenreType&gt;" visibility="private"/>
+        <Field name="actors" type="HashMap&lt;String, Person&gt;" visibility="private"/>
+        <Field name="director" type="Person" visibility="private"/>
+        <Field name="year" type="int" visibility="private"/>
+        <Field name="countries" type="Set&lt;String&gt;" visibility="private"/>
+        <Field name="duration" type="int" visibility="private"/>
+        <Field name="description" type="String" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="name"/>
+          <Argument type="int" name="year"/>
+          <Argument type="int" name="duration"/>
+        </Constructor>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="setCreator" returnType="void" visibility="public">
+          <Argument type="User" name="creator"/>
+        </Method>
+        <Method name="getName" returnType="String" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="Person" package="ncec.catalogmoviesweb" visibility="public" xPosition="1489.0" yPosition="399.0">
+      <Fields>
+        <Field name="gender" type="Gender" visibility="package"/>
+        <Field name="firstname" type="String" visibility="package"/>
+        <Field name="lasttname" type="String" visibility="package"/>
+        <Field name="age" type="int" visibility="package"/>
+        <Field name="career" type="EnumSet&lt;Role.RoleMovie&gt;" visibility="package"/>
+        <Field name="films" type="HashMap&lt;String, EnumSet&lt;Role.RoleMovie&gt;&gt;" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="Gender" name="gender"/>
+          <Argument type="String" name="firstname"/>
+          <Argument type="String" name="lasttname"/>
+          <Argument type="int" name="age"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="setMovie" returnType="void" visibility="public">
+          <Argument type="String" name="name"/>
+          <Argument type="EnumSet&lt;Role.RoleMovie&gt;" name="roles"/>
+        </Method>
+        <Method name="addRole" returnType="void" visibility="public">
+          <Argument type="Role.RoleMovie" name="role"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Profile" package="ncec.catalogmoviesweb" visibility="public" xPosition="334.0" yPosition="1155.0">
+      <Fields>
+        <Field name="owner" type="User" visibility="package"/>
+        <Field name="login" type="String" visibility="package"/>
+        <Field name="password" type="String" visibility="package"/>
+        <Field name="profile" type="File" visibility="package"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="User" name="owner"/>
+          <Argument type="String" name="login"/>
+          <Argument type="String" name="password"/>
+        </Constructor>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Class name="Role" package="ncec.catalogmoviesweb" visibility="public" xPosition="1728.0" yPosition="733.0">
+      <Fields/>
+      <Constructors/>
+      <Methods/>
+    </Class>
+    <Class name="User" package="ncec.catalogmoviesweb" visibility="public" xPosition="834.0" yPosition="964.0">
+      <Fields>
+        <Field name="ides" type="Set&lt;Integer&gt;" visibility="private" isStatic="true"/>
+        <Field name="id" type="int" visibility="private"/>
+        <Field name="firstname" type="String" visibility="private"/>
+        <Field name="lasttname" type="String" visibility="private"/>
+        <Field name="login" type="String" visibility="private"/>
+        <Field name="catalogs" type="Set&lt;Catalog&gt;" visibility="private"/>
+        <Field name="movies" type="Set&lt;Movie&gt;" visibility="private"/>
+        <Field name="profile" type="Profile" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public">
+          <Argument type="String" name="firstname"/>
+          <Argument type="String" name="lasttname"/>
+          <Argument type="String" name="login"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="computeId" returnType="int" visibility="private" isStatic="true"/>
+        <Method name="getId" returnType="int" visibility="public"/>
+        <Method name="addMovie" returnType="void" visibility="public">
+          <Argument type="Movie" name="movie"/>
+        </Method>
+        <Method name="getFirstname" returnType="String" visibility="public"/>
+        <Method name="getLasttname" returnType="String" visibility="public"/>
+        <Method name="getLogin" returnType="String" visibility="public"/>
+        <Method name="getProfile" returnType="Profile" visibility="public"/>
+      </Methods>
+    </Class>
+    <Class name="UserException" package="ncec.catalogmoviesweb" visibility="public" xPosition="996.0" yPosition="20.0">
+      <Fields/>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="String" name="message"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="String" name="message"/>
+          <Argument type="Throwable" name="cause"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="Throwable" name="cause"/>
+        </Constructor>
+        <Constructor visibility="public">
+          <Argument type="String" name="message"/>
+          <Argument type="Throwable" name="cause"/>
+          <Argument type="boolean" name="enableSuppression"/>
+          <Argument type="boolean" name="writableStackTrace"/>
+        </Constructor>
+      </Constructors>
+      <Methods/>
+    </Class>
+    <Class name="UserManager" package="ncec.catalogmoviesweb" visibility="public" xPosition="1663.0" yPosition="951.0">
+      <Fields>
+        <Field name="users" type="HashMap&lt;String, User&gt;" visibility="public" isStatic="true"/>
+      </Fields>
+      <Constructors/>
+      <Methods>
+        <Method name="addUser" returnType="void" visibility="public" isStatic="true">
+          <Argument type="User" name="user"/>
+        </Method>
+        <Method name="removeUser" returnType="void" visibility="public" isStatic="true">
+          <Argument type="String" name="login"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Interface name="Storable" package="ncec.catalogmoviesweb" visibility="public" xPosition="93.0" yPosition="547.0">
+      <Methods>
+        <Method name="add" returnType="boolean" visibility="package">
+          <Argument type="Object" name="o"/>
+        </Method>
+        <Method name="remove" returnType="boolean" visibility="package">
+          <Argument type="Object" name="o"/>
+        </Method>
+      </Methods>
+    </Interface>
+    <Enum name="Gender" package="ncec.catalogmoviesweb" visibility="public" xPosition="996.0" yPosition="250.0">
+      <Literals>
+        <Literal name="MALE"/>
+        <Literal name="FEMALE"/>
+      </Literals>
+    </Enum>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <HasRelation name="creator" source="ncec.catalogmoviesweb.Movie" target="ncec.catalogmoviesweb.User" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="ncec.catalogmoviesweb.User" target="ncec.catalogmoviesweb.Profile" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="users" source="ncec.catalogmoviesweb.UserManager" target="ncec.catalogmoviesweb.User" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="HashMap&lt;String, User&gt;"/>
+    <HasRelation name="catalogs" source="ncec.catalogmoviesweb.User" target="ncec.catalogmoviesweb.Catalog" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Set&lt;Catalog&gt;"/>
+    <UseRelation source="ncec.catalogmoviesweb.UserManager" target="ncec.catalogmoviesweb.User" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="ncec.catalogmoviesweb.Person" target="ncec.catalogmoviesweb.Role" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="ncec.catalogmoviesweb.Movie" target="ncec.catalogmoviesweb.User" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="gender" source="ncec.catalogmoviesweb.Person" target="ncec.catalogmoviesweb.Gender" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="ncec.catalogmoviesweb.CatalogManager" target="ncec.catalogmoviesweb.Catalog" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="profile" source="ncec.catalogmoviesweb.User" target="ncec.catalogmoviesweb.Profile" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="catalogs" source="ncec.catalogmoviesweb.CatalogManager" target="ncec.catalogmoviesweb.Catalog" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Set&lt;Catalog&gt;"/>
+    <UseRelation source="ncec.catalogmoviesweb.CatalogManager" target="ncec.catalogmoviesweb.Movie" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="ncec.catalogmoviesweb.FabricMovies" target="ncec.catalogmoviesweb.Movie" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="owner" source="ncec.catalogmoviesweb.Profile" target="ncec.catalogmoviesweb.User" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="ncec.catalogmoviesweb.User" target="ncec.catalogmoviesweb.Movie" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="movies" source="ncec.catalogmoviesweb.CatalogManager" target="ncec.catalogmoviesweb.Movie" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="HashMap&lt;String, Movie&gt;"/>
+    <HasRelation name="creator" source="ncec.catalogmoviesweb.Catalog" target="ncec.catalogmoviesweb.User" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="fm" source="ncec.catalogmoviesweb.Catalog" target="ncec.catalogmoviesweb.FabricMovies" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="director" source="ncec.catalogmoviesweb.Movie" target="ncec.catalogmoviesweb.Person" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="ncec.catalogmoviesweb.Catalog" target="ncec.catalogmoviesweb.Movie" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="films" source="ncec.catalogmoviesweb.Catalog" target="ncec.catalogmoviesweb.Movie" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="HashMap&lt;String, Movie&gt;"/>
+    <HasRelation name="actors" source="ncec.catalogmoviesweb.Movie" target="ncec.catalogmoviesweb.Person" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="HashMap&lt;String, Person&gt;"/>
+    <HasRelation name="movies" source="ncec.catalogmoviesweb.User" target="ncec.catalogmoviesweb.Movie" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="Set&lt;Movie&gt;"/>
+  </ClassDiagramRelations>
+</ClassDiagram>

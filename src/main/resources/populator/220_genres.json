@@ -1,0 +1,18 @@
+[
+  {
+    "_class": "ncec.cfweb.Genre",
+    "name": "Thriller"
+  },
+  {
+    "_class": "ncec.cfweb.Genre",
+    "name": "Drama"
+  },
+  {
+    "_class": "ncec.cfweb.Genre",
+    "name": "Western"
+  },
+  {
+    "_class": "ncec.cfweb.Genre",
+    "name": "Science fiction"
+  }
+]

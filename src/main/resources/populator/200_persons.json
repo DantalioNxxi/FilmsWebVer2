@@ -1,0 +1,35 @@
+[
+  {
+    "_class": "ncec.cfweb.Person",
+    "firstname": "Francis",
+    "lastname": "Coppola",
+    "age": "79"
+  },
+  {
+    "_class": "ncec.cfweb.Person",
+    "firstname": "Alfredo",
+    "lastname": "Pacino",
+    "age": "77"
+  },
+  {
+    "_class": "ncec.cfweb.Person",
+    "firstname": "Emily",
+    "lastname": "Stone",
+    "age": "29",
+    "gender": "FEMALE"
+  },
+  {
+    "_class": "ncec.cfweb.Person",
+    "firstname": "Christopher",
+    "lastname": "Nolan",
+    "age": "47",
+    "gender": "MALE"
+  },
+  {
+    "_class": "ncec.cfweb.Person",
+    "firstname": "Ryan",
+    "lastname": "Gosling",
+    "age": "37",
+    "gender": "MALE"
+  }
+]

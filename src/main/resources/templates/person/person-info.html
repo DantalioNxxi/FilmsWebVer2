@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" rel="stylesheet"/>
+        <title>Person Info</title>
+    </head>
+    <body style="padding-top: 70px;">
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Movie Library</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/movie/all-movies">Movies</a></li>
+                    <li><a href="/person/all-persons">Persons</a></li>
+                    <li><a href="/person/create-person-page">Create Person</a></li>
+                    <li class="active">
+                        <a th:href="@{/person/person-info(firstname=${person.firstname}, lastname=${person.lastname})}"
+                            th:text="${person.firstname} + ' ' + ${person.lastname}"></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+        <div class="container">
+            <div class="row">
+
+                <p>
+                    <a class="btn btn-primary"
+                       th:href="@{/person/edit-person-page(firstname=${person.firstname}, lastname=${person.lastname})}" role="button">Edit</a>
+                </p>
+                
+                <table th:object="${person}" class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th th:text="*{firstname} + ' ' + *{lastname}"></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Имя</td>
+                        <td th:text="*{firstname}"></td>
+                    </tr>
+                    <tr>
+                        <td>Фамилия</td>
+                        <td th:text="*{lastname}"></td>
+                        <!--<td th:text="${Dates.format(movie.duration, '%Y')}"></td>-->
+                    </tr>
+                    <tr>
+                        <td>Возраст</td>
+                        <td th:text="*{age}"></td>
+                    </tr>
+                    <tr>
+                        <td>Пол</td>
+                        <td th:text="*{gender}"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"><strong>Participation in the creation of films:</strong></td>
+                    </tr>
+                    <tr th:each="movie, stat : ${movies}">
+                        <td style="width: 50px;">   </td>
+                        <td><p th:text="${stat.count}"></p></td>
+                        <td>
+                        <a th:href="@{/movie/movie-info/{movieId}(movieId=${movie.id})}" th:text="${movie.title}"></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+
+        <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+        <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+    </body>
+</html>
