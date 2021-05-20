@@ -1,8 +1,10 @@
 package ncec.cfweb.services.impl;
 
-import ncec.cfweb.Movie;
-import ncec.cfweb.Movies;
-import ncec.cfweb.Person;
+import com.opencsv.CSVWriter;
+import ncec.cfweb.entity.Genre;
+import ncec.cfweb.entity.Movie;
+import ncec.cfweb.entity.Movies;
+import ncec.cfweb.entity.Person;
 import ncec.cfweb.repositories.MovieRepository;
 import ncec.cfweb.services.MovieService;
 import ncec.cfweb.services.PersonService;
@@ -11,10 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import com.opencsv.CSVWriter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 import org.w3c.tidy.Tidy;
 
 import javax.xml.bind.JAXB;
@@ -24,23 +22,10 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import ncec.cfweb.Genre;
 
 /**
  *
@@ -124,7 +109,7 @@ public class MovieServiceImpl implements MovieService{
 
     @Override
     public Movie getById(Long id) {
-        return movieRepository.findById(id);
+        return movieRepository.findById(id).get();
     }
     
 
@@ -135,7 +120,7 @@ public class MovieServiceImpl implements MovieService{
     
     @Override
     public List<Movie> getByIds(Collection<Long> movieIds) {
-        return (List<Movie>) movieRepository.findAll(movieIds);
+        return movieRepository.findAllById(movieIds);
     }
     
     @Override

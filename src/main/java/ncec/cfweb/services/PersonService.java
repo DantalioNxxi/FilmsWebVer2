@@ -1,8 +1,9 @@
 package ncec.cfweb.services;
 
+import ncec.cfweb.entity.Gender;
+import ncec.cfweb.entity.Person;
+
 import java.util.List;
-import ncec.cfweb.Gender;
-import ncec.cfweb.Person;
 
 /**
  *

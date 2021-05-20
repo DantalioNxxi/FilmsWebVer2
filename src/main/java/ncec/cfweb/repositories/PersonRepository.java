@@ -1,12 +1,14 @@
 package ncec.cfweb.repositories;
 
-import java.util.List;
-import javax.transaction.Transactional;
-import ncec.cfweb.Person;
+import ncec.cfweb.entity.Person;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -16,8 +18,9 @@ import org.springframework.stereotype.Repository;
 public interface PersonRepository extends CrudRepository<Person, Long>{
     
     List<Person> findByFirstnameAndLastname(String firstname, String lastname);
-    
-    Person findById(Long id);
+
+    @Override
+    Optional<Person> findById(Long id);
 
     @Modifying(clearAutomatically = true)
     @Transactional

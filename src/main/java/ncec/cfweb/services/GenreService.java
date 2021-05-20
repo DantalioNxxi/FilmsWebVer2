@@ -1,7 +1,8 @@
 package ncec.cfweb.services;
 
+import ncec.cfweb.entity.Genre;
+
 import java.util.List;
-import ncec.cfweb.Genre;
 
 /**
  *

@@ -5,19 +5,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.init.Jackson2RepositoryPopulatorFactoryBean;
-import org.springframework.data.repository.init.Jackson2ResourceReader;
-import org.springframework.data.repository.init.RepositoryPopulator;
-import org.springframework.data.repository.init.ResourceReaderRepositoryPopulator;
-
 
 import java.io.IOException;
-import javax.servlet.MultipartConfigElement;
-import org.springframework.boot.web.servlet.MultipartConfigFactory;
-import org.springframework.context.annotation.ComponentScan;
 
 /**
  *
@@ -28,7 +22,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan
 @EnableJpaRepositories(basePackages = "ncec.cfweb.repositories")
 @Configuration
-public class CFWebApplication {
+public class CFWebVer2Application {
 
     @Bean
     public Jackson2RepositoryPopulatorFactoryBean repositoryPopulator(ResourcePatternResolver resolver) throws IOException {
@@ -38,6 +32,6 @@ public class CFWebApplication {
     }
     
     public static void main(String[] args) {
-        SpringApplication.run(CFWebApplication.class, args);
+        SpringApplication.run(CFWebVer2Application.class, args);
     }
 }

@@ -1,19 +1,19 @@
 package ncec.cfweb.services.impl;
 
-import java.util.HashSet;
-import ncec.cfweb.Person;
+import ncec.cfweb.entity.Movie;
+import ncec.cfweb.entity.Person;
+import ncec.cfweb.entity.Gender;
+import ncec.cfweb.repositories.MovieRepository;
 import ncec.cfweb.repositories.PersonRepository;
 import ncec.cfweb.services.PersonService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import ncec.cfweb.Gender;
-import ncec.cfweb.Movie;
-import ncec.cfweb.repositories.MovieRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -38,12 +38,12 @@ public class PersonServiceImpl implements PersonService{
 
     @Override
     public Person getById(Long id) {
-        return personRepository.findById(id);
+        return personRepository.findById(id).get();
     }
 
     @Override
     public Person editPerson(Long id, String firstname, String lastname, int age, Gender gender) {
-        Person newp = personRepository.findById(id);
+        Person newp = personRepository.findById(id).get();
         newp.setFirstname(firstname);
         newp.setLastname(lastname);
         newp.setAge(age);
@@ -73,9 +73,9 @@ public class PersonServiceImpl implements PersonService{
             LOG.info("Start to add films");
 //            Set<Movie> sm = new HashSet<>();
             for (Long mid : movieIds){
-                LOG.info("Add Film " + movieRepository.findById(mid).getTitle());
+                LOG.info("Add Film " + movieRepository.findById(mid).get().getTitle());
 //                sm.add(movieRepository.findById(mid));
-                    person.addMovie(movieRepository.findById(mid));
+                    person.addMovie(movieRepository.findById(mid).get());
             }
 //            person.setMovies(sm);
             LOG.info("Set new set of films");
@@ -89,8 +89,8 @@ public class PersonServiceImpl implements PersonService{
         Set<Movie> sm = new HashSet<>();
         if (!movieIds.isEmpty()){
             for (Long mid : movieIds){
-                LOG.info("Add Film " + movieRepository.findById(mid).getTitle());
-                sm.add(movieRepository.findById(mid));
+                LOG.info("Add Film " + movieRepository.findById(mid).get().getTitle());
+                sm.add(movieRepository.findById(mid).get());
             }
         }
         person.setMovies(sm);

@@ -1,4 +1,4 @@
-package ncec.cfweb;
+package ncec.cfweb.entity;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;

@@ -1,13 +1,11 @@
 package ncec.cfweb.services;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
-import ncec.cfweb.Movie;
-import ncec.cfweb.Movies;
+import ncec.cfweb.entity.Movie;
+import ncec.cfweb.entity.Movies;
 
 /**
  *

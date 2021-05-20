@@ -1,13 +1,14 @@
 package ncec.cfweb.services.impl;
 
-import java.util.List;
-import ncec.cfweb.Genre;
+import ncec.cfweb.entity.Genre;
 import ncec.cfweb.repositories.GenreRepository;
 import ncec.cfweb.services.GenreService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  *
@@ -28,7 +29,7 @@ public class GenreServiceImpl implements GenreService{
 
     @Override
     public Genre findById(Integer id) {
-        return genreRepository.findById(id);
+        return genreRepository.findById(id).get();
     }
 
     @Override
