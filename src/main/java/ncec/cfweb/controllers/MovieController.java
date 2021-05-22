@@ -1,36 +1,34 @@
 package ncec.cfweb.controllers;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 import ncec.cfweb.entity.Movie;
 import ncec.cfweb.services.GenreService;
 import ncec.cfweb.services.MovieService;
 import ncec.cfweb.services.PersonService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
+
 /**
  *
  * @author DantalioNxxi
  */
-@Controller
+@Slf4j
 @RequestMapping("/movie")
+@Controller
 public class MovieController {
 
     @Autowired
@@ -42,24 +40,22 @@ public class MovieController {
     @Autowired
     PersonService personService;
     
-    private static final Logger LOG = LoggerFactory.getLogger(MovieController.class);
-    
     //===========Movie Info=====================
 
     @GetMapping(value = "/movie-info/{movieId}")
-    ModelAndView movieInfo(Model model, @PathVariable(value = "movieId") Long movieId){
+    ModelAndView movieInfo(Model model, @PathVariable(value = "movieId") UUID movieId){
         ModelAndView mv = new ModelAndView("movie/movie-info");
         Movie movie = movieService.getById(movieId);
         mv.addObject("movie", movie);
-        LOG.info("Movie Info: ");
-        LOG.info("Is movie has persons??: "+movie.getPersons().toString());
+        log.info("Movie Info: ");
+        log.info("Is movie has persons??: "+movie.getPersons().toString());
         mv.addObject("persons", movie.getPersons());
         mv.addObject("genres", movie.getGenres());
         return mv;
     }
     
     @PostMapping(value = "/movie-info{movieId}")
-    ModelAndView afterEditInfoMovie(@PathVariable(value = "movieId") Long movieId,
+    ModelAndView afterEditInfoMovie(@PathVariable(value = "movieId") UUID movieId,
             @RequestParam(value="movieName") String movieName){
         //check by parse for movieName
         Movie movie = movieService.getById(movieId);        //where is the checking must being?
@@ -71,7 +67,7 @@ public class MovieController {
     @GetMapping(value = "/all-movies")
     public ModelAndView allMovies() {//Model model
         
-        LOG.info("In GetMapping All-Movies: ");
+        log.info("In GetMapping All-Movies: ");
         ModelAndView mv = new ModelAndView("movie/all-movies");
         mv.addObject("movies", movieService.getAll());
  
@@ -99,14 +95,14 @@ public class MovieController {
     
     @PostMapping(value = "/search-movie-page")
     String searchMovie(Model model, @RequestParam String movieName, RedirectAttributes redirectAttributes){
-        LOG.info("Searching movie with name "+ movieName+ "...");
+        log.info("Searching movie with name "+ movieName+ "...");
         redirectAttributes.addAttribute("movieName", movieName);
         
         List<Movie> movies = movieService.getAll();
         if (!movies.isEmpty()){
             for(Movie m : movies){
                 if(m.getTitle().contains(movieName)){
-                    LOG.info("Such film with name "+ movieName+ " was founded");
+                    log.info("Such film with name "+ movieName+ " was founded");
                     
                     return "redirect:/movie/search-movie-result-page";
                 }
@@ -152,23 +148,23 @@ public class MovieController {
             @RequestParam(value="date") @DateTimeFormat(pattern="yyyy-MM-dd") Date date, // special form for to fit a date????
             @RequestParam(value="duration") Integer duration,
             @RequestParam(value="description") String description,
-            @RequestParam(value="directorId", required = false) Long directorId,
-            @RequestParam(value="genreIds", required = false) List<Integer> genreIds,
-            @RequestParam(value="actorIds", required = false) List<Long> actorIds,
+            @RequestParam(value="directorId", required = false) UUID directorId,
+            @RequestParam(value="genreIds", required = false) List<UUID> genreIds,
+            @RequestParam(value="actorIds", required = false) List<UUID> actorIds,
             Model model){
         
-        LOG.info("In create movie page: ");
+        log.info("In create movie page: ");
         ModelAndView mv;
         
         Movie newm = new Movie(title, duration, description);
         
         newm.setDateCreation(date);
-        LOG.info("Date was setted!!!!!: "+date.toString());
+        log.info("Date was setted!!!!!: "+date.toString());
         
         if (!movieService.getByName(title).isEmpty()){
             for(Movie m : movieService.getByName(title)){
                 if (m.equals(newm)){
-                    LOG.info("Such movie already exists: ");
+                    log.info("Such movie already exists: ");
                     return "redirect:/movie/create-movie-miss-page?message=Such movie already exists!";
                 }
             }
@@ -179,7 +175,7 @@ public class MovieController {
         if (genreIds == null) genreIds = new ArrayList<>();
         
         movieService.addMovieWithActorsAndGenres(newm, actorIds, genreIds);//date,
-        LOG.info("Return all-movies: ");
+        log.info("Return all-movies: ");
         mv = new ModelAndView("movie/all-movies");
         return "redirect:/movie/all-movies";
     }
@@ -194,7 +190,7 @@ public class MovieController {
     //===========Edit Movie=====================
 
     @GetMapping(value = "/edit-movie-page")
-    ModelAndView getEditMovie(@RequestParam Long id) {
+    ModelAndView getEditMovie(@RequestParam UUID id) {
         ModelAndView mv = new ModelAndView("movie/edit-movie-page");
         mv.addObject("movie", movieService.getById(id));
         mv.addObject("genres", genreService.findAll());
@@ -204,14 +200,14 @@ public class MovieController {
 
     @PostMapping(value = "/edit-movie-page")
     ModelAndView postEditMovie(
-            @RequestParam(value="id") Long id,
+            @RequestParam(value="id") UUID id,
             @RequestParam(value="title") String title,
             @RequestParam(value="dateCreation") @DateTimeFormat(pattern="yyyy-MM-dd") Date dateCreation,
             @RequestParam(value="duration") Integer duration,
             @RequestParam(value="description") String description,
-            @RequestParam(value="directorId", required = false) Long directorId,
-            @RequestParam(value="genreIds", required = false) List<Integer> genreIds,
-            @RequestParam(value="actorIds", required = false) List<Long> actorIds)
+            @RequestParam(value="directorId", required = false) UUID directorId,
+            @RequestParam(value="genreIds", required = false) List<UUID> genreIds,
+            @RequestParam(value="actorIds", required = false) List<UUID> actorIds)
     {
         
         Movie newm = movieService.getById(id);
@@ -235,9 +231,9 @@ public class MovieController {
     }
     
     @PostMapping(value = "/delete-movie")
-    String deletePerson(@RequestParam(value="movieId") Long movieId)
+    String deletePerson(@RequestParam(value="movieId") UUID movieId)
     {
-        LOG.info("Delete movie post controller: ");
+        log.info("Delete movie post controller: ");
         movieService.deleteById(movieId);
         return "redirect:/movie/all-movies";
     }
@@ -245,7 +241,7 @@ public class MovieController {
     //============Export============= 
 
     @PostMapping("/export-movies")
-    public ResponseEntity<StreamingResponseBody> exportMovies(@RequestParam List<Long> movieIds){
+    public ResponseEntity<StreamingResponseBody> exportMovies(@RequestParam List<UUID> movieIds){
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"movies.csv\"")
                 .body(out -> movieService.exportMovies(movieIds, out));
@@ -255,19 +251,19 @@ public class MovieController {
     
     @PostMapping("/import-movie")
     RedirectView importPage(@RequestParam String movieName, RedirectAttributes redirectAttributes){
-        LOG.info("In import-movie controller:");
+        log.info("In import-movie controller:");
         ArrayList<Movie> movies = (ArrayList<Movie>)movieService.importMovie(movieName);//ver2
         redirectAttributes.addFlashAttribute("movies", movies);
         RedirectView redirectView = new RedirectView("/movie/import-movie-result");
         redirectView.getAttributesMap().put("movies", movies);
-        LOG.info("Try save movies in controller:");
+        log.info("Try save movies in controller:");
         movieService.savingMovies(movies);
         return redirectView;
     }
     
     @GetMapping(value = "/import-movie-result")
     ModelAndView importMovieResult(RedirectAttributes redirectAttributes){
-        LOG.info("Saving importe-movie-result-controller!");
+        log.info("Saving importe-movie-result-controller!");
         return new ModelAndView("import/import-movie-page");//.addObject("movies", movies)
     }
     

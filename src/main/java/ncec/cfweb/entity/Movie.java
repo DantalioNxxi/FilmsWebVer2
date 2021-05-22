@@ -1,6 +1,9 @@
 
 package ncec.cfweb.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -8,10 +11,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 /**
  *
@@ -20,12 +20,15 @@ import java.util.Set;
 @Entity
 @XmlType
 @XmlAccessorType(XmlAccessType.NONE)
+@Document(collection = "movie")
+@Getter
+@Setter
 public class Movie {
     
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Column(name = "MOVIE_ID")
-    private Long id;
+    private UUID id;
 
     @XmlElement
     private String title;
@@ -80,11 +83,11 @@ public class Movie {
         genres = new HashSet<>();
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
     

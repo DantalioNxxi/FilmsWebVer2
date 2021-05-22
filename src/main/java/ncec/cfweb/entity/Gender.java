@@ -1,12 +1,25 @@
 package ncec.cfweb.entity;
 
+import lombok.Data;
+import lombok.ToString;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import java.util.UUID;
+
 /**
  *
  * @author DantalioNxxi
  */
-public enum Gender {
-    MALE, FEMALE;//possible changed not set but simply enum - ref!!
-    
-    Gender(){}
-   
+@Document(collection = "gender")
+@Data
+@ToString
+public class Gender {
+
+    @Id
+    private UUID id;
+
+    @Column(unique = true)
+    private String name;//must be is unique
 }

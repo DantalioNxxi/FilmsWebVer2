@@ -1,26 +1,21 @@
 
 package ncec.cfweb.entity;
 
+import lombok.ToString;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 
 /**
  *
  * @author DantalioNxxi
  */
 @Entity
+@ToString
+@Document(collection = "person")
 public class Person {
 
     @Id

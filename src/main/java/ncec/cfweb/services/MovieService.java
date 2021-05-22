@@ -1,11 +1,12 @@
 package ncec.cfweb.services;
 
+import ncec.cfweb.entity.Movie;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
-import ncec.cfweb.entity.Movie;
-import ncec.cfweb.entity.Movies;
+import java.util.UUID;
 
 /**
  *
@@ -18,21 +19,21 @@ public interface MovieService {
     
     Movie addMovie(Movie movie);
     
-    Movie addMovieWithActorsAndGenres(Movie movie, List<Long> actors, List<Integer> genreIds);
+    Movie addMovieWithActorsAndGenres(Movie movie, List<UUID> actors, List<UUID> genreIds);
     
     void delete(String name);
     
-    void deleteById(Long id);
+    void deleteById(UUID id);
     
     List<Movie> getByName(String name);
     
-    Movie getById(Long id);
+    Movie getById(UUID id);
     
     List<Movie> getAll();
 
-    List<Movie> getByIds(Collection<Long> movieIds);
+    List<Movie> getByIds(Collection<UUID> movieIds);
     
-    void exportMovies(List<Long> movieIds, OutputStream out) throws IOException;
+    void exportMovies(List<UUID> movieIds, OutputStream out) throws IOException;
     
     List<Movie> importMovie(String movieName);
     

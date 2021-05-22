@@ -1,45 +1,34 @@
 package ncec.cfweb.entity;
 
-import javax.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  *
  * @author DantalioNxxi
  */
 @Entity
+@Document(collection = "genre")
+@Getter
+@Setter
+@AllArgsConstructor
 public class Genre {
     
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer id;
+    private UUID id;
 
     @Column(unique = true)
     private String name;//must be is unique
 
-    public Genre(String name) {
-        this.name = name;
-    }
-    
-//    public Set<Movie> movies
-
     protected Genre() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
-    
-    public String getName() {
-        return name;
     }
 
     @Override
@@ -71,7 +60,4 @@ public class Genre {
     public String toString() {
         return name;
     }
-    
-    
-    
 }

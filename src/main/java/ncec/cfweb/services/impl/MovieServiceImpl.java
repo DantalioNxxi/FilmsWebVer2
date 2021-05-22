@@ -1,6 +1,7 @@
 package ncec.cfweb.services.impl;
 
 import com.opencsv.CSVWriter;
+import lombok.extern.slf4j.Slf4j;
 import ncec.cfweb.entity.Genre;
 import ncec.cfweb.entity.Movie;
 import ncec.cfweb.entity.Movies;
@@ -8,8 +9,6 @@ import ncec.cfweb.entity.Person;
 import ncec.cfweb.repositories.MovieRepository;
 import ncec.cfweb.services.MovieService;
 import ncec.cfweb.services.PersonService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -31,11 +30,10 @@ import java.util.regex.Pattern;
  *
  * @author DantalioNxxi
  */
+@Slf4j
 @Service
-public class MovieServiceImpl implements MovieService{
+public class MovieServiceImpl implements MovieService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(MovieServiceImpl.class);
-    
     @Autowired
     MovieRepository movieRepository;
 
@@ -46,9 +44,9 @@ public class MovieServiceImpl implements MovieService{
     GenreServiceImpl genreService;
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(UUID id) {
         movieRepository.deleteById(id);
-        LOG.info("Movie has deleted!");
+        log.info("Movie has deleted!");
     }
     
     @Override
@@ -66,27 +64,27 @@ public class MovieServiceImpl implements MovieService{
     }
 
     @Override
-    public Movie addMovieWithActorsAndGenres(Movie movie, List<Long> actors, List<Integer> genreIds) {
-        LOG.info("In addMovieWithActors: ");
+    public Movie addMovieWithActorsAndGenres(Movie movie, List<UUID> actors, List<UUID> genreIds) {
+        log.info("In addMovieWithActors: ");
         
         Set<Person> actorset = new HashSet<>();
         if (!actors.isEmpty())
         {
-            for (Long idc : actors){
+            for (UUID idc : actors){
                 actorset.add(personService.getById(idc));
             }
         }
         movie.setPersons(actorset);
-        LOG.info("Actor's Set was added: ");
+        log.info("Actor's Set was added: ");
         
         Set<Genre> genreset = new HashSet<>();
         if(!genreIds.isEmpty()){
-            for (Integer idc : genreIds){
+            for (UUID idc : genreIds){
                 genreset.add(genreService.findById(idc));
             }
         }
         movie.setGenres(genreset);
-        LOG.info("Genre's Set was added: ");
+        log.info("Genre's Set was added: ");
         
         return movieRepository.save(movie);
     }
@@ -108,7 +106,7 @@ public class MovieServiceImpl implements MovieService{
     }
 
     @Override
-    public Movie getById(Long id) {
+    public Movie getById(UUID id) {
         return movieRepository.findById(id).get();
     }
     
@@ -119,12 +117,12 @@ public class MovieServiceImpl implements MovieService{
     }
     
     @Override
-    public List<Movie> getByIds(Collection<Long> movieIds) {
+    public List<Movie> getByIds(Collection<UUID> movieIds) {
         return movieRepository.findAllById(movieIds);
     }
     
     @Override
-    public void exportMovies(List<Long> movieIds, OutputStream out) throws IOException {
+    public void exportMovies(List<UUID> movieIds, OutputStream out) throws IOException {
         List<Movie> movies = getByIds(movieIds);
         try (CSVWriter csv = new CSVWriter(new OutputStreamWriter(out))) {
             
@@ -166,7 +164,7 @@ public class MovieServiceImpl implements MovieService{
         StringWriter xml = new StringWriter();
         tidy.parse(new StringReader(html), xml);
 
-        LOG.warn("xml = {}", xml.toString());
+        log.warn("xml = {}", xml.toString());
         
         StringWriter afterXslt = new StringWriter();// XSLT
         try {
@@ -187,14 +185,14 @@ public class MovieServiceImpl implements MovieService{
             throw new IllegalStateException(ex);
         }
 
-        LOG.warn("afterXslt = {}", afterXslt.toString());
+        log.warn("afterXslt = {}", afterXslt.toString());
 
         Movies movies = JAXB.unmarshal(new StringReader(afterXslt.toString()), Movies.class);// Movies
 
         // First version: save Repository
         // and then return
 
-        LOG.info("Change dates!");
+        log.info("Change dates!");
         List<Movie> retMovies = movies.getMovies();//ver2
 //        ArrayList<Movie> retMovies = (ArrayList<Movie>)movies.getMovies();//ver2
 
@@ -205,13 +203,13 @@ public class MovieServiceImpl implements MovieService{
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(Integer.valueOf(m.group()), 0, 1);
                 movie.setDateCreation(calendar.getTime());
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Update movie DateCreation to ({})", movie.getDateCreation());
+                if (log.isDebugEnabled()) {
+                    log.debug("Update movie DateCreation to ({})", movie.getDateCreation());
                 }
             }
         }
 
-        LOG.warn("movies = {retMovies.size}", retMovies.size());
+        log.warn("movies = {retMovies.size}", retMovies.size());
         
         
         return retMovies;
@@ -220,7 +218,7 @@ public class MovieServiceImpl implements MovieService{
     @Override
     public void savingMovies(List<Movie> movies){
         //save movies:
-        LOG.info("Saving imported movies!", movies.size());
+        log.info("Saving imported movies!", movies.size());
 //        Map<Long, Movie> movieMap = retMovies.stream()
 //                .collect(HashMap::new, (hashMap, movie) -> hashMap.put(movie.getId(), movie), HashMap::putAll);
 
@@ -228,10 +226,10 @@ public class MovieServiceImpl implements MovieService{
             if (movieRepository.findByTitle(movie.getTitle()).isEmpty()){
 
 //                parse director
-                LOG.info("Try parse director!");
+                log.info("Try parse director!");
                 String[] str;
                 if (movie.getFullname().contains(" ")){
-                    LOG.info("Contains _!");
+                    log.info("Contains _!");
                      str = movie.getFullname().split(" ");
                         if (personService.getByFirstAndLastName(str[0], str[1]).isEmpty()){
                            Person person = new Person(str[0], str[1]);
@@ -242,7 +240,7 @@ public class MovieServiceImpl implements MovieService{
                            personService.getByFirstAndLastName(str[0], str[1]).get(0).addMovie(movie);//tm
                        }
                 } else {
-                    LOG.info("Not contains _!");
+                    log.info("Not contains _!");
                     str = new String[1];
                     str[0] = movie.getFullname();
                     if (personService.getByFirstAndLastName(str[0], "defaultLastname").isEmpty()){
@@ -254,7 +252,7 @@ public class MovieServiceImpl implements MovieService{
                            personService.getByFirstAndLastName(str[0], "defaultLastname").get(0).addMovie(movie);//tm
                     }
                 }
-                LOG.info("Directors successfully were saved!");
+                log.info("Directors successfully were saved!");
                 
 
                 //parse date
@@ -263,7 +261,7 @@ public class MovieServiceImpl implements MovieService{
                 movieRepository.save(movie);
             }
         }
-        LOG.info("Movies was saved!", movies.size());
+        log.info("Movies was saved!", movies.size());
     }
     //END of class
 }

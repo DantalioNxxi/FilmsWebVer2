@@ -1,28 +1,27 @@
 package ncec.cfweb.services.impl;
 
+import lombok.extern.slf4j.Slf4j;
+import ncec.cfweb.entity.Gender;
 import ncec.cfweb.entity.Movie;
 import ncec.cfweb.entity.Person;
-import ncec.cfweb.entity.Gender;
 import ncec.cfweb.repositories.MovieRepository;
 import ncec.cfweb.repositories.PersonRepository;
 import ncec.cfweb.services.PersonService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  *
  * @author DantalioNxxi
  */
+@Slf4j
 @Service
 public class PersonServiceImpl implements PersonService{
-    
-    private static final Logger LOG = LoggerFactory.getLogger(PersonServiceImpl.class);
 
     @Autowired
     PersonRepository personRepository;
@@ -32,17 +31,17 @@ public class PersonServiceImpl implements PersonService{
 
     @Override
     public void deleteByFirstAndLastName(String firstname, String lastname) {
-        LOG.info("Delete person through ServiceImpl...");
+        log.info("Delete person through ServiceImpl...");
         personRepository.deleteByFirstnameAndLastname(firstname, lastname);
     }
 
     @Override
-    public Person getById(Long id) {
+    public Person getById(UUID id) {
         return personRepository.findById(id).get();
     }
 
     @Override
-    public Person editPerson(Long id, String firstname, String lastname, int age, Gender gender) {
+    public Person editPerson(UUID id, String firstname, String lastname, int age, Gender gender) {
         Person newp = personRepository.findById(id).get();
         newp.setFirstname(firstname);
         newp.setLastname(lastname);
@@ -52,7 +51,7 @@ public class PersonServiceImpl implements PersonService{
     }
 
     @Override
-    public void deleteById(Long id) {
+    public void deleteById(UUID id) {
         personRepository.deleteById(id);
     }
     
@@ -66,35 +65,35 @@ public class PersonServiceImpl implements PersonService{
     
     
     @Override
-    public Person addPersonWithMovies(Person person, List<Long> movieIds) {
+    public Person addPersonWithMovies(Person person, List<UUID> movieIds) {
         
         if (!movieIds.isEmpty()){
             
-            LOG.info("Start to add films");
+            log.info("Start to add films");
 //            Set<Movie> sm = new HashSet<>();
-            for (Long mid : movieIds){
-                LOG.info("Add Film " + movieRepository.findById(mid).get().getTitle());
+            for (UUID mid : movieIds){
+                log.info("Add Film " + movieRepository.findById(mid).get().getTitle());
 //                sm.add(movieRepository.findById(mid));
                     person.addMovie(movieRepository.findById(mid).get());
             }
 //            person.setMovies(sm);
-            LOG.info("Set new set of films");
+            log.info("Set new set of films");
         }
         return personRepository.save(person);// tm not return still wothout collections
     }
 
     @Override//here is THE ERROR!
-    public Person addMoviesToPerson(Person person, List<Long> movieIds) {
-        LOG.info("Start to add new film collection");
+    public Person addMoviesToPerson(Person person, List<UUID> movieIds) {
+        log.info("Start to add new film collection");
         Set<Movie> sm = new HashSet<>();
         if (!movieIds.isEmpty()){
-            for (Long mid : movieIds){
-                LOG.info("Add Film " + movieRepository.findById(mid).get().getTitle());
+            for (UUID mid : movieIds){
+                log.info("Add Film " + movieRepository.findById(mid).get().getTitle());
                 sm.add(movieRepository.findById(mid).get());
             }
         }
         person.setMovies(sm);
-        LOG.info("Set new set of films");
+        log.info("Set new set of films");
         return personRepository.save(person);// tm not return still wothout collections
     }
     
@@ -116,19 +115,19 @@ public class PersonServiceImpl implements PersonService{
             
             //костыль:
             Set<Movie> oldmovies= new HashSet<>();
-            LOG.info("Check old films!");
+            log.info("Check old films!");
             if (!newp.getMovies().isEmpty()){
-                LOG.info("Old films was safed!");
+                log.info("Old films was safed!");
                 oldmovies.addAll(newp.getMovies());
                 newp.getMovies().clear();
-                LOG.info("Films of entity was cleared!");
+                log.info("Films of entity was cleared!");
             }
             
             personRepository.updateByFirstnameAndLastname(firstname, lastname, oldfirstname, oldlastname);
-            LOG.info("Old fname and lname was changed");
+            log.info("Old fname and lname was changed");
             
             newp.setMovies(oldmovies);//костыль
-            LOG.info("Old films was added again!");
+            log.info("Old films was added again!");
         }
         
         return personRepository.findByFirstnameAndLastname(firstname, lastname).get(0);

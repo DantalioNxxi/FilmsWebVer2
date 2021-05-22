@@ -9,6 +9,7 @@ import java.util.List;
  * @since 06.04.2018
  */
 @XmlRootElement
+//for import untill
 public class Movies {
 
     List<Movie> movies = new ArrayList<>();

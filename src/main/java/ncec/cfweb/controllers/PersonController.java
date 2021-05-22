@@ -1,12 +1,11 @@
 package ncec.cfweb.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import ncec.cfweb.entity.Gender;
 import ncec.cfweb.entity.Movie;
 import ncec.cfweb.entity.Person;
 import ncec.cfweb.services.MovieService;
 import ncec.cfweb.services.PersonService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,13 +15,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  *
  * @author DantalioNxxi
  */
-@Controller
+@Slf4j
 @RequestMapping("/person")
+@Controller
 public class PersonController {
     
     @Autowired
@@ -30,8 +31,6 @@ public class PersonController {
     
     @Autowired
     MovieService movieService;
-    
-    private static final Logger LOG = LoggerFactory.getLogger(PersonController.class);
     
     //===========All Persons=====================
     
@@ -56,12 +55,12 @@ public class PersonController {
         mv.addObject("movies", personService.getByFirstAndLastName(firstname, lastname).get(0).getMovies());
         
         Person pp = personService.getByFirstAndLastName(firstname, lastname).get(0);
-//        LOG.info("Try to cast getMovies: ");
+//        log.info("Try to cast getMovies: ");
 //        HashSet<Movie> hsm = (HashSet<Movie>)pp.getMovies();
-        LOG.info("The films was added: "+pp.getMovies().toString());
+        log.info("The films was added: "+pp.getMovies().toString());
         if (pp.getMovies().isEmpty()){System.out.println("IS EMPTY!");}
         for(Movie movie : pp.getMovies()){
-            LOG.info("Name of film: "+movie.getTitle());
+            log.info("Name of film: "+movie.getTitle());
         }
         return mv;
     }
@@ -70,14 +69,14 @@ public class PersonController {
     
     @RequestMapping(value = "/search-person-page", method = RequestMethod.POST)
     String searchPerson(Model model, @RequestParam String fullName, RedirectAttributes redirectAttributes){
-        LOG.info("Searching movie with name "+ fullName+ "...");
+        log.info("Searching movie with name "+ fullName+ "...");
         redirectAttributes.addAttribute("fullName", fullName);
         
         List<Person> persons = personService.getAll();
         if (!persons.isEmpty()){
             for(Person p : persons){
                 if(p.getFirstname().concat(" ").concat(p.getLastname()).contains(fullName)){
-                    LOG.info("Such person with name "+ fullName+ " was founded");
+                    log.info("Such person with name "+ fullName+ " was founded");
                     return "redirect:/person/search-person-result-page";
                 }
             }
@@ -130,13 +129,13 @@ public class PersonController {
             @RequestParam(value="lastname") String lastname,
             @RequestParam(value="age") int age,
             @RequestParam(value="gender") Gender gender,
-            @RequestParam(value="movieIds", required = false) List<Long> movieIds)
+            @RequestParam(value="movieIds", required = false) List<UUID> movieIds)
     {
         
-        LOG.info("The oldfirstname: "+oldfirstname);
-        LOG.info("The oldlastname: "+oldlastname);
-        LOG.info("The firstname: "+firstname);
-        LOG.info("The lastname: "+lastname);
+        log.info("The oldfirstname: "+oldfirstname);
+        log.info("The oldlastname: "+oldlastname);
+        log.info("The firstname: "+firstname);
+        log.info("The lastname: "+lastname);
         
         if (!personService.getByFirstAndLastName(firstname, lastname).isEmpty()
                 && (!oldfirstname.equals(firstname) || !oldlastname.equals(lastname))){
@@ -145,10 +144,10 @@ public class PersonController {
         }
         
         Person pnew = personService.editPerson(oldfirstname, oldlastname, firstname, lastname, age, gender);
-        LOG.info("Try to add a new film set: "+lastname);
+        log.info("Try to add a new film set: "+lastname);
         if (movieIds == null) movieIds = new ArrayList<>();
         personService.addMoviesToPerson(pnew, movieIds);
-        LOG.info("addMoviesToPerson successfull!: "+lastname);
+        log.info("addMoviesToPerson successfull!: "+lastname);
         
         ModelAndView mv = new ModelAndView("person/person-info");
         mv.addObject("person", personService.getByFirstAndLastName(firstname, lastname).get(0));
@@ -161,9 +160,9 @@ public class PersonController {
     ModelAndView deletePerson(@RequestParam(value="firstname") String firstname,
             @RequestParam(value="lastname") String lastname)
     {
-        LOG.info("Delete person post controller: ");
-        LOG.info("fname: "+firstname);
-        LOG.info("lname: "+lastname);
+        log.info("Delete person post controller: ");
+        log.info("fname: "+firstname);
+        log.info("lname: "+lastname);
         
         personService.deleteByFirstAndLastName(firstname, lastname);
         
@@ -184,17 +183,17 @@ public class PersonController {
             @RequestParam(value="lastname") String lastname,
             @RequestParam(value="age") Integer age,
             @RequestParam(value="gender") Gender gender,
-            @RequestParam(value="movieIds", required = false) List<Long> movieIds)
+            @RequestParam(value="movieIds", required = false) List<UUID> movieIds)
     {
-        LOG.info("Внутри create person post controller: ");
-        LOG.info("fname: "+firstname);
-        LOG.info("lname: "+lastname);
-        LOG.info("age: "+age);
-        LOG.info("gender: "+gender);
-        LOG.info("Films: ");
+        log.info("Внутри create person post controller: ");
+        log.info("fname: "+firstname);
+        log.info("lname: "+lastname);
+        log.info("age: "+age);
+        log.info("gender: "+gender);
+        log.info("Films: ");
         if (movieIds == null) movieIds = new ArrayList<>();
-        for(Long id : movieIds){
-            LOG.info("Id: "+id);
+        for(UUID id : movieIds){
+            log.info("Id: "+id);
         }
         
         if (!personService.getByFirstAndLastName(firstname, lastname).isEmpty()){
@@ -206,9 +205,9 @@ public class PersonController {
         personService.addPersonWithMovies(person, movieIds);
         //...
         
-        LOG.info("After saving person has become person with movies: ");
+        log.info("After saving person has become person with movies: ");
         for(Movie movie : personService.getByFirstAndLastName(firstname, lastname).get(0).getMovies()){
-            LOG.info("Film: "+movie.getTitle());
+            log.info("Film: "+movie.getTitle());
         }
         
         return new ModelAndView("person/all-persons").addObject("persons", personService.getAll());

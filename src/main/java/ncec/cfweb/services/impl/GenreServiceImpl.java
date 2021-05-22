@@ -3,12 +3,11 @@ package ncec.cfweb.services.impl;
 import ncec.cfweb.entity.Genre;
 import ncec.cfweb.repositories.GenreRepository;
 import ncec.cfweb.services.GenreService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  *
@@ -16,8 +15,6 @@ import java.util.List;
  */
 @Service
 public class GenreServiceImpl implements GenreService{
-    
-    private static final Logger LOG = LoggerFactory.getLogger(GenreServiceImpl.class);
     
     @Autowired
     GenreRepository genreRepository;
@@ -28,7 +25,7 @@ public class GenreServiceImpl implements GenreService{
     }
 
     @Override
-    public Genre findById(Integer id) {
+    public Genre findById(UUID id) {
         return genreRepository.findById(id).get();
     }
 

@@ -1,36 +1,33 @@
 
 package ncec.cfweb;
 
+import ncec.cfweb.config.JacksonPopulator;
+import ncec.cfweb.config.mongodb.MongoDBConfiguration;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.support.ResourcePatternResolver;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.data.repository.init.Jackson2RepositoryPopulatorFactoryBean;
-
-import java.io.IOException;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.servlet.HttpEncodingAutoConfiguration;
+import org.springframework.boot.autoconfigure.web.servlet.WebMvcAutoConfiguration;
+import org.springframework.context.annotation.Import;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
 /**
  *
  * @author DantalioNxxi
  */
+@Import({
+        HttpEncodingAutoConfiguration.class,
+        SecurityFilterAutoConfiguration.class,
+        WebClientAutoConfiguration.class,
+        WebMvcAutoConfiguration.class,
+        MongoDBConfiguration.class,
+        JacksonPopulator.class
+})
+@EnableMongoRepositories(basePackages = "ncec.cfweb.repositories")
 @SpringBootApplication
-@EnableAutoConfiguration
-@ComponentScan
-@EnableJpaRepositories(basePackages = "ncec.cfweb.repositories")
-@Configuration
 public class CFWebVer2Application {
 
-    @Bean
-    public Jackson2RepositoryPopulatorFactoryBean repositoryPopulator(ResourcePatternResolver resolver) throws IOException {
-        Jackson2RepositoryPopulatorFactoryBean populator = new Jackson2RepositoryPopulatorFactoryBean();
-        populator.setResources(resolver.getResources("classpath:/populator/*.json"));
-        return populator;
-    }
-    
     public static void main(String[] args) {
         SpringApplication.run(CFWebVer2Application.class, args);
     }
