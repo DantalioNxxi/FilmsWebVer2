@@ -3,10 +3,10 @@ package ncec.cfweb.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -17,7 +17,6 @@ import java.util.*;
  *
  * @author DantalioNxxi
  */
-@Entity
 @XmlType
 @XmlAccessorType(XmlAccessType.NONE)
 @Document(collection = "movie")
@@ -26,40 +25,38 @@ import java.util.*;
 public class Movie {
     
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name = "MOVIE_ID")
     private UUID id;
 
     @XmlElement
     private String title;
 
     @DateTimeFormat (pattern="yyyy-MM-dd")
-    @Temporal(TemporalType.DATE)
+    //@Temporal(TemporalType.DATE)
     private Date dateCreation;
 
     private int duration;
 
     @XmlElement
-    @Column(length = 2500)
+    //@Column(length = 2500)
     private String description;
     
-    @ElementCollection
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, targetEntity = Genre.class)
+    //@ElementCollection
+    //@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER, targetEntity = Genre.class)
     private Set<Genre> genres;
     
-    @ElementCollection
-//    @ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY) //Movie - is owner
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY) //Movie - is owner
-    private Set<Person> persons;
+    //@ElementCollection
+//    //@ManyToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY) //Movie - is owner
+    //@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY) //Movie - is owner
+    private Set<UUID> persons;
     
-    @ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    //@ManyToOne(optional = true, fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     private Person director;
     
-    @Transient
+    //@Transient
     @XmlElement
     private String fullname;//tm
     
-    @Transient
+    //@Transient
     @XmlElement
     private String fulldate;//tm
     
@@ -82,88 +79,6 @@ public class Movie {
         persons = new HashSet<>();
         genres = new HashSet<>();
     }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-    
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-    
-
-    public Date getDateCreation() {
-        return dateCreation;
-    }
-
-    public void setDateCreation(Date dateCreation) {
-        this.dateCreation = dateCreation;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Person getDirector() {
-        return director;
-    }
-
-    public void setDirector(Person director) {
-        this.director = director;
-    }
-
-    public String getFullname() {
-        return fullname;
-    }
-
-    public void setFullname(String fullname) {
-        this.fullname = fullname;
-    }
-
-    public String getFulldate() {
-        return fulldate;
-    }
-
-    public void setFulldate(String fulldate) {
-        this.fulldate = fulldate;
-    }
-
-    public Set<Person> getPersons() {
-        return persons;
-    }
-
-    public void setPersons(Set<Person> persons) {
-        this.persons = persons;
-    }
-
-    public Set<Genre> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(Set<Genre> genres) {
-        this.genres = genres;
-    }
-    
 
     @Override
     public int hashCode() {

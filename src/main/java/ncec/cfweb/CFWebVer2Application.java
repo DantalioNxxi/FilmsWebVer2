@@ -24,7 +24,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
         MongoDBConfiguration.class,
         JacksonPopulator.class
 })
-@EnableMongoRepositories(basePackages = "ncec.cfweb.repositories")
+@EnableMongoRepositories(basePackages = "ncec.cfweb.repositories",
+        mongoTemplateRef = MongoDBConfiguration.MICROSERVICE_MONGO_TEMPLATE)
 @SpringBootApplication
 public class CFWebVer2Application {
 

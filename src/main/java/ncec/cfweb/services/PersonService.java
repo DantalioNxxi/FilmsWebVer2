@@ -1,6 +1,5 @@
 package ncec.cfweb.services;
 
-import ncec.cfweb.entity.Gender;
 import ncec.cfweb.entity.Person;
 
 import java.util.List;
@@ -22,9 +21,9 @@ public interface PersonService {
     
     Person getById(UUID id);
     
-    Person editPerson(String oldfirstname, String oldlastname, String firstname, String lastname, int age, Gender gender);
+    Person editPerson(String oldfirstname, String oldlastname, String firstname, String lastname, int age, UUID genderId);
     
-    Person editPerson(UUID id, String firstname, String lastname, int age, Gender gender);
+    Person editPerson(UUID id, String firstname, String lastname, int age, UUID genderId);
     
     List<Person> getAll();
     

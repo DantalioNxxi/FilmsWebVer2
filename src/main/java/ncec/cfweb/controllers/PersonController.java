@@ -1,8 +1,6 @@
 package ncec.cfweb.controllers;
 
 import lombok.extern.slf4j.Slf4j;
-import ncec.cfweb.entity.Gender;
-import ncec.cfweb.entity.Movie;
 import ncec.cfweb.entity.Person;
 import ncec.cfweb.services.MovieService;
 import ncec.cfweb.services.PersonService;
@@ -51,17 +49,9 @@ public class PersonController {
         @RequestParam(value = "firstname") String firstname) {
         
         ModelAndView mv = new ModelAndView("person/person-info");
-        mv.addObject("person", personService.getByFirstAndLastName(firstname, lastname).get(0));
-        mv.addObject("movies", personService.getByFirstAndLastName(firstname, lastname).get(0).getMovies());
-        
-        Person pp = personService.getByFirstAndLastName(firstname, lastname).get(0);
-//        log.info("Try to cast getMovies: ");
-//        HashSet<Movie> hsm = (HashSet<Movie>)pp.getMovies();
-        log.info("The films was added: "+pp.getMovies().toString());
-        if (pp.getMovies().isEmpty()){System.out.println("IS EMPTY!");}
-        for(Movie movie : pp.getMovies()){
-            log.info("Name of film: "+movie.getTitle());
-        }
+        final Person person = personService.getByFirstAndLastName(firstname, lastname).get(0);
+        mv.addObject("person", person);
+        mv.addObject("movies", movieService.getByIds(person.getMovies()));
         return mv;
     }
     
@@ -122,13 +112,13 @@ public class PersonController {
     }
 
     @PostMapping(value = "/edit-person-page")
-    ModelAndView postEditPerson(
+    ModelAndView postEditPerson(//НАДО ИСПРАВИТЬ ЭТОТ МЕТОД;
             @RequestParam(value="oldfirstname") String oldfirstname,
             @RequestParam(value="oldlastname") String oldlastname,
             @RequestParam(value="firstname") String firstname,
             @RequestParam(value="lastname") String lastname,
             @RequestParam(value="age") int age,
-            @RequestParam(value="gender") Gender gender,
+            @RequestParam(value="genderId") UUID genderId,
             @RequestParam(value="movieIds", required = false) List<UUID> movieIds)
     {
         
@@ -143,7 +133,7 @@ public class PersonController {
                     .addObject("message", "Person with such firstname and lastname is already exists!");
         }
         
-        Person pnew = personService.editPerson(oldfirstname, oldlastname, firstname, lastname, age, gender);
+        Person pnew = personService.editPerson(oldfirstname, oldlastname, firstname, lastname, age, genderId);
         log.info("Try to add a new film set: "+lastname);
         if (movieIds == null) movieIds = new ArrayList<>();
         personService.addMoviesToPerson(pnew, movieIds);
@@ -182,14 +172,14 @@ public class PersonController {
     ModelAndView createPerson(@RequestParam(value="firstname") String firstname,
             @RequestParam(value="lastname") String lastname,
             @RequestParam(value="age") Integer age,
-            @RequestParam(value="gender") Gender gender,
+            @RequestParam(value="genderId") UUID genderId,
             @RequestParam(value="movieIds", required = false) List<UUID> movieIds)
     {
         log.info("Внутри create person post controller: ");
         log.info("fname: "+firstname);
         log.info("lname: "+lastname);
         log.info("age: "+age);
-        log.info("gender: "+gender);
+        log.info("genderId: "+genderId);
         log.info("Films: ");
         if (movieIds == null) movieIds = new ArrayList<>();
         for(UUID id : movieIds){
@@ -200,15 +190,15 @@ public class PersonController {
             return new ModelAndView("person/create-person-miss-page").addObject("message", "Person with such firstname and lasname is already exists!");
         }
         
-        Person person = new Person(firstname, lastname, age, gender);
+        Person person = new Person(firstname, lastname, age, genderId);
         
         personService.addPersonWithMovies(person, movieIds);
         //...
         
-        log.info("After saving person has become person with movies: ");
-        for(Movie movie : personService.getByFirstAndLastName(firstname, lastname).get(0).getMovies()){
-            log.info("Film: "+movie.getTitle());
-        }
+//        log.info("After saving person has become person with movies: ");
+//        for(Movie movie : personService.getByFirstAndLastName(firstname, lastname).get(0).getMovies()){
+//            log.info("Film: "+movie.getTitle());
+//        }
         
         return new ModelAndView("person/all-persons").addObject("persons", personService.getAll());
     }

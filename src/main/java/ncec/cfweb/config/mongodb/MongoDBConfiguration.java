@@ -15,6 +15,8 @@ public class MongoDBConfiguration {
     @Value("${spring.data.mongodb.database}")
     private String mongoDbName;
 
+    public static final String MICROSERVICE_MONGO_TEMPLATE = "microserviceMongoTemplate";
+
     @Bean
     public MongoClient mongo() {
         ConnectionString connectionString = new ConnectionString("mongodb://localhost:27017/" + mongoDbName);
@@ -25,7 +27,7 @@ public class MongoDBConfiguration {
         return MongoClients.create(mongoClientSettings);
     }
 
-    @Bean
+    @Bean(name = MICROSERVICE_MONGO_TEMPLATE)
     public MongoTemplate mongoTemplate() throws Exception {
         return new MongoTemplate(mongo(), mongoDbName);
     }

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -26,6 +27,8 @@ public interface MovieService {
     void deleteById(UUID id);
     
     List<Movie> getByName(String name);
+
+    Set<Movie> findByIdAndPersonsContains(UUID movieId, UUID personId);
     
     Movie getById(UUID id);
     

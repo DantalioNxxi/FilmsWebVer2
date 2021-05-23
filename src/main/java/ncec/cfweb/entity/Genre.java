@@ -2,11 +2,10 @@ package ncec.cfweb.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Objects;
 import java.util.UUID;
@@ -15,21 +14,19 @@ import java.util.UUID;
  *
  * @author DantalioNxxi
  */
-@Entity
+//@Entity
 @Document(collection = "genre")
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class Genre {
     
     @Id
     private UUID id;
 
-    @Column(unique = true)
+    //@Column(unique = true)
     private String name;//must be is unique
-
-    protected Genre() {
-    }
 
     @Override
     public int hashCode() {

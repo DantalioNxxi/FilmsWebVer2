@@ -1,51 +1,56 @@
 
 package ncec.cfweb.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  *
  * @author DantalioNxxi
  */
-@Entity
+////@Entity
 @ToString
+@Getter
+@Setter
 @Document(collection = "person")
 public class Person {
 
     @Id
-    @Column
+    //@Column
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "firstname")
+    //@Column(name = "firstname")
     private String firstname;
 
-    @Column(name = "lastname")
+    //@Column(name = "lastname")
     private String lastname;
 
-    @Column(name = "age")
+    //@Column(name = "age")
     private int age;
 
-    @Column(name = "gender")
-    @Enumerated(EnumType.ORDINAL)
-    private Gender gender;
+    private UUID genderId;
 
-    @ElementCollection
-    @ManyToMany(mappedBy = "persons", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)//tm
-    private Set<Movie> movies;
+    //@ElementCollection
+    //@ManyToMany(mappedBy = "persons", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)//tm
+    private Set<UUID> movies;
 
     public Person() {
         movies = new HashSet<>();
     }
 
-    public Person(String firstname, String lastname, int age, Gender gender) {
-        this.gender = gender;
+    public Person(String firstname, String lastname, int age, UUID genderId) {
+        this.genderId = genderId;
         this.firstname = firstname;
         this.lastname = lastname;
         this.age = age;
@@ -65,58 +70,10 @@ public class Person {
         movies = new HashSet<>();
     }
 
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public Gender getGender() {
-        return gender;
-    }
-
-    public void setGender(Gender gender) {
-        this.gender = gender;
-    }
-
-    public Set<Movie> getMovies() {
-        return movies;
-    }
-
-    public void setMovies(Set<Movie> movies) {
-        this.movies = movies;
-    }
-    
     public void addMovie(Movie m){
-        movies.add(m);
+        movies.add(m.getId());
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
     @Override
     public int hashCode() {
         int hash = 5;
@@ -147,7 +104,7 @@ public class Person {
         if (!Objects.equals(this.lastname, other.lastname)) {
             return false;
         }
-        if (this.gender != other.gender) {
+        if (this.genderId != other.genderId) {
             return false;
         }
         return true;

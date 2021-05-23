@@ -16,8 +16,12 @@ import java.util.UUID;
 @Service
 public class GenreServiceImpl implements GenreService{
     
+    private final GenreRepository genreRepository;
+
     @Autowired
-    GenreRepository genreRepository;
+    public GenreServiceImpl(GenreRepository genreRepository) {
+        this.genreRepository = genreRepository;
+    }
 
     @Override
     public List<Genre> findByName(String name) {
